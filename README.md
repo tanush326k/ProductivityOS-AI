@@ -50,13 +50,6 @@
 
 <br />
 
----
-
-<details>
-<summary><strong>📸 Screenshot Previews</strong></summary>
-
-<br />
-
 > **Dashboard** — AI Insights, Focus Time Velocity chart, real-time activity log, and AI Productivity Coach  
 > **Task Board** — 4-column Kanban with AI Autopilot, AI Subtask generation, and priority badges  
 > **AI Assistant** — Context-aware conversational agent with workspace state awareness  
