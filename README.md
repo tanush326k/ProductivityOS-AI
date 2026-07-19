@@ -1,14 +1,6 @@
 <div align="center">
 
 <!-- Hero SVG Banner -->
-<br />
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://img.shields.io/badge/%E2%9C%A8%20ProductivityOS%20AI-Generative%20AI%20Workspace-8b5cf6?style=for-the-badge&labelColor=09090b&color=8b5cf6">
-  <img alt="ProductivityOS AI" src="https://img.shields.io/badge/%E2%9C%A8%20ProductivityOS%20AI-Generative%20AI%20Workspace-8b5cf6?style=for-the-badge&labelColor=09090b&color=8b5cf6">
-</picture>
-
-<br />
 
 # 🧠 ProductivityOS AI
 
@@ -25,7 +17,11 @@
 
 <br />
 
-[🚀 Live Demo](#-demo) · [📖 Documentation](#-architecture) · [⚡ Quick Start](#-quick-start) · [🤝 Contributing](#-contributing)
+🌐 **Live App:** https://productivity-os-ai-l66g.vercel.app/
+
+<br />
+
+[🚀 Live Website](https://productivity-os-ai-l66g.vercel.app/) · [📖 Architecture](#-architecture) · [⚡ Quick Start](#-quick-start)
 
 <br />
 
@@ -37,7 +33,6 @@
 
 ## 📋 Table of Contents
 
-- [Demo](#-demo)
 - [Features](#-features)
 - [Architecture](#-architecture)
 - [AI Workflow](#-ai-workflow)
@@ -50,22 +45,12 @@
 - [Security](#-security)
 - [Accessibility](#-accessibility)
 - [Performance](#-performance)
-- [Deployment](#-deployment)
 - [Roadmap](#-roadmap)
 - [License](#-license)
-- [Contributors](#-contributors)
 
 <br />
 
 ---
-
-## 🎬 Demo
-
-| Resource | Link |
-|:---------|:-----|
-| 🌐 **Live Demo** | _Deploy to Vercel for instant preview_ |
-| 🎥 **Demo Video** | _Screen recording of full AI workflow_ |
-| 📸 **Screenshots** | _See below_ |
 
 <details>
 <summary><strong>📸 Screenshot Previews</strong></summary>
@@ -536,32 +521,6 @@ npm run build
 
 <br />
 
----
-
-## 🚢 Deployment
-
-### Vercel (Recommended)
-
-```bash
-# Install Vercel CLI
-npm i -g vercel
-
-# Deploy
-vercel
-```
-
-1. Connect your GitHub repository on [vercel.com](https://vercel.com)
-2. Add `GEMINI_API_KEY` to **Settings → Environment Variables**
-3. Deploy — Vercel auto-detects Next.js configuration
-
-### Manual Build
-
-```bash
-npm run build
-npm run start
-```
-
-<br />
 
 ---
 
@@ -662,25 +621,6 @@ mindmap
 ## 📄 License
 
 This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
-
-<br />
-
----
-
-## 👥 Contributors
-
-<table>
-  <tr>
-    <td align="center">
-      <a href="https://github.com/tanush326k">
-        <br />
-        <sub><b>Tanush</b></sub>
-      </a>
-      <br />
-      <sub>Creator & Lead Developer</sub>
-    </td>
-  </tr>
-</table>
 
 <br />
 
