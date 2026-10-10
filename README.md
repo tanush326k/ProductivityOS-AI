@@ -8,12 +8,17 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS%20v4-38bdf8?style=for-the-badge&logo=tailwindcss)](https://tailwindcss.com/)
 [![Groq](https://img.shields.io/badge/Groq-Inference%20Engine-f97316?style=for-the-badge)](https://groq.com/)
+[![AWS Amplify](https://img.shields.io/badge/AWS-Amplify%20Hosting-FF9900?style=for-the-badge&logo=aws-amplify&logoColor=white)](https://main.d1fa52fy3h96m8.amplifyapp.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-emerald?style=for-the-badge)](LICENSE)
 
 <br />
 
-🌐 **AWS Amplify Deployment:** [https://main.d1fa52fy3h96m8.amplifyapp.com/](https://main.d1fa52fy3h96m8.amplifyapp.com/)  
-🌐 **Vercel Mirror:** [https://productivity-os-ai-l66g.vercel.app/](https://productivity-os-ai-l66g.vercel.app/)
+### 🌐 Live Application URLs
+
+| Platform | Live Deployment Link | Status |
+| :--- | :--- | :--- |
+| **AWS Amplify (Primary)** | **[https://main.d1fa52fy3h96m8.amplifyapp.com/](https://main.d1fa52fy3h96m8.amplifyapp.com/)** | 🟢 Live / Active |
+| **Vercel (Mirror)** | **[https://productivity-os-ai-l66g.vercel.app/](https://productivity-os-ai-l66g.vercel.app/)** | 🟢 Live / Active |
 
 <br />
 
@@ -30,6 +35,16 @@
 **ProductivityOS AI** is an all-in-one generative AI productivity workspace engineered to eliminate context switching and streamline task execution.
 
 Powered by **Groq's ultra-low latency inference engine** running `openai/gpt-oss-120b` (with automated Gemini fallback), ProductivityOS AI helps individuals and engineering teams organize backlogs, auto-estimate workloads, generate structured checklists, optimize daily timelines, synthesize meeting notes, and compose professional communications in sub-second responses.
+
+---
+
+## 🚀 Live Demo & Access
+
+You can test the fully functional app directly in your browser without local setup:
+
+* **Production URL:** [https://main.d1fa52fy3h96m8.amplifyapp.com/](https://main.d1fa52fy3h96m8.amplifyapp.com/)
+* **Hosting:** AWS Amplify Hosting (Next.js SSR App Router)
+* **GitHub Repository:** [https://github.com/tanush326k/ProductivityOS-AI](https://github.com/tanush326k/ProductivityOS-AI)
 
 ---
 
@@ -68,26 +83,27 @@ Unified workspace consolidating essential communication and document tools:
 
 ```
 ProductivityOS AI
+├── amplify.yml               # AWS Amplify SSR build specification & env injection
 ├── app/
 │   ├── api/
-│   │   ├── gemini/route.ts       # Unified AI backend (Groq + Gemini fallback)
-│   │   └── groq/route.ts         # Direct Groq route alias
+│   │   ├── gemini/route.ts   # Unified AI backend (Groq + Gemini fallback)
+│   │   └── groq/route.ts     # Direct Groq route alias
 │   ├── components/
-│   │   ├── DashboardView.tsx     # Performance analytics & AI Coach
-│   │   ├── TaskBoard.tsx         # Kanban board + Autopilot + Subtask breakdown
-│   │   ├── AssistantView.tsx     # Context-aware chat companion
-│   │   ├── PlannerView.tsx       # Timeline scheduler & AI optimizer
-│   │   ├── SummarizersView.tsx   # AI Studio (Meeting Notes, Docs, Emails)
-│   │   ├── Sidebar.tsx           # Streamlined 5-tab navigation
-│   │   └── Header.tsx            # Workspace status & live AI engine badge
+│   │   ├── DashboardView.tsx # Performance analytics & AI Coach
+│   │   ├── TaskBoard.tsx     # Kanban board + Autopilot + Subtask breakdown
+│   │   ├── AssistantView.tsx # Context-aware chat companion
+│   │   ├── PlannerView.tsx   # Timeline scheduler & AI optimizer
+│   │   ├── SummarizersView.tsx # AI Studio (Meeting Notes, Docs, Emails)
+│   │   ├── Sidebar.tsx       # Streamlined 5-tab navigation
+│   │   └── Header.tsx        # Workspace status & live AI engine badge
 │   ├── context/
-│   │   └── AppContext.tsx        # Central workspace state & local persistence
+│   │   └── AppContext.tsx    # Central workspace state & local persistence
 │   ├── lib/
-│   │   ├── api.ts                # Robust, type-safe client API wrapper
-│   │   └── groq.ts               # Shared Groq client instance
-│   ├── globals.css               # Modern glassmorphism theme & styles
-│   ├── layout.tsx                # App root layout with toast providers
-│   └── page.tsx                  # Clean view router
+│   │   ├── api.ts            # Robust, type-safe client API wrapper
+│   │   └── groq.ts           # Shared Groq client instance
+│   ├── globals.css           # Modern glassmorphism theme & styles
+│   ├── layout.tsx            # App root layout with toast providers
+│   └── page.tsx              # Clean view router
 ```
 
 ---
@@ -129,6 +145,38 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to experienc
 
 ---
 
+## ☁️ AWS Amplify Deployment
+
+This project includes a pre-configured [`amplify.yml`](amplify.yml) optimized for **Next.js App Router SSR**:
+
+```yaml
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm ci --cache .npm --prefer-offline
+        - env | grep -E '^(GROQ_API_KEY|GROK_API_KEY|GEMINI_API_KEY)=' >> .env.production || true
+    build:
+      commands:
+        - npm run build
+  artifacts:
+    baseDirectory: .next
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - .next/cache/**/*
+      - .npm/**/*
+```
+
+To deploy on AWS Amplify:
+1. Connect this repository to **AWS Amplify Hosting**.
+2. Under **App settings ➔ Environment variables**, add `GROQ_API_KEY`.
+3. Save and deploy — Amplify automatically runs the SSR build and serves the app globally.
+
+---
+
 ## 🔒 Security & Best Practices
 
 - **Zero Client Key Exposure**: All AI completions execute strictly on the server-side Next.js route handlers. No API keys are leaked to the client bundle.
@@ -141,6 +189,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to experienc
 
 | Technology | Purpose |
 |:---|:---|
+| **AWS Amplify Hosting** | CI/CD, global hosting & Next.js SSR server compute |
 | **Next.js 16 (Turbopack)** | Fullstack React framework with App Router |
 | **TypeScript** | Strict compile-time type safety |
 | **Groq SDK** | Ultra-low latency LLM inference (`openai/gpt-oss-120b`) |
