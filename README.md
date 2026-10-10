@@ -75,7 +75,92 @@ Unified workspace consolidating essential communication and document tools:
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ System Architecture
+
+```mermaid
+flowchart TD
+    subgraph Client["🖥️ User Workspace (Browser Client)"]
+        UI["Modern Next.js UI (React 19)\n(Dashboard, Kanban, Planner, Studio, Chat)"]
+        State["React Context State\n(Tasks, Planner, Logs, LocalStorage)"]
+        API_Helper["Safe API Wrapper (app/lib/api.ts)\n(Typed JSON Validation & Toast Alerts)"]
+        UI <--> State
+        UI --> API_Helper
+    end
+
+    subgraph AWS["☁️ AWS Amplify Hosting (SSR App Router)"]
+        AmplifyEdge["Amplify CDN & Edge Proxy"]
+        SSRCompute["Next.js SSR Compute (Node.js Server)"]
+        EnvProd[".env.production\n(Injected via amplify.yml preBuild)"]
+        
+        API_Helper -->|"HTTPS POST /api/gemini"| AmplifyEdge
+        AmplifyEdge --> SSRCompute
+        EnvProd -.->|"Server-side credentials"| SSRCompute
+        
+        RouteHandler["app/api/gemini/route.ts\n(Context Ingestion & Schema Guardrails)"]
+        SSRCompute --> RouteHandler
+    end
+
+    subgraph Inference["⚡ High-Velocity AI Engines"]
+        Groq["Groq LPU Engine\nModel: openai/gpt-oss-120b\n(Primary Ultra-Fast Inference)"]
+        Gemini["Google Gemini API\nModel: gemini-2.5-flash\n(Automated Secondary Fallback)"]
+        
+        RouteHandler -->|"Primary: groq-sdk"| Groq
+        RouteHandler -.->|"Fallback: @google/genai"| Gemini
+    end
+
+    classDef client fill:#1e1b4b,stroke:#818cf8,stroke-width:1.5px,color:#fff;
+    classDef aws fill:#14532d,stroke:#4ade80,stroke-width:1.5px,color:#fff;
+    classDef ai fill:#7c2d12,stroke:#fb923c,stroke-width:1.5px,color:#fff;
+    class UI,State,API_Helper client;
+    class AmplifyEdge,SSRCompute,EnvProd,RouteHandler aws;
+    class Groq,Gemini ai;
+```
+
+---
+
+## 🔄 Intelligent Agentic Workflows
+
+```mermaid
+flowchart LR
+    subgraph Input["📥 Inputs & Events"]
+        direction TB
+        RawNotes["Meeting Transcript\n(Unstructured raw notes)"]
+        Backlog["Unorganized Tasks\n(Missing estimates & tags)"]
+        Goal["Communication Goal\n(Audience, tone & length)"]
+    end
+
+    subgraph Engine["🤖 Agentic Processing"]
+        direction TB
+        Summarizer["Executive Synthesis\n(Extracts decisions & action items)"]
+        Autopilot["AI Autopilot\n(Estimates effort, sets priority & tags)"]
+        ScheduleOpt["Timeline Optimizer\n(Balances focus blocks & rest breaks)"]
+        EmailGen["Professional Drafter\n(Generates polished copy)"]
+    end
+
+    subgraph Output["🎯 Live State Mutated"]
+        direction TB
+        Kanban["Kanban Board Cards\n(1-Click Action Item Sync)"]
+        DailySchedule["Daily Planner Timeline\n(09:00 - 18:00 Focus Schedule)"]
+        Subtasks["Actionable Checklists\n(3-6 concrete subtasks)"]
+        EmailCopy["Executive Draft\n(Ready-to-send email)"]
+    end
+
+    RawNotes --> Summarizer --> Kanban
+    Backlog --> Autopilot --> Subtasks
+    Kanban --> ScheduleOpt --> DailySchedule
+    Goal --> EmailGen --> EmailCopy
+
+    classDef input fill:#18181b,stroke:#52525b,stroke-width:1.5px,color:#fff;
+    classDef engine fill:#311042,stroke:#c084fc,stroke-width:1.5px,color:#fff;
+    classDef output fill:#042f2e,stroke:#2dd4bf,stroke-width:1.5px,color:#fff;
+    class RawNotes,Backlog,Goal input;
+    class Summarizer,Autopilot,ScheduleOpt,EmailGen engine;
+    class Kanban,DailySchedule,Subtasks,EmailCopy output;
+```
+
+---
+
+## 📁 Repository Structure
 
 ```
 ProductivityOS AI
