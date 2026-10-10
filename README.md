@@ -12,11 +12,12 @@
 
 <br />
 
-🌐 **Live Website:** [https://productivity-os-ai-l66g.vercel.app/](https://productivity-os-ai-l66g.vercel.app/)
+🌐 **AWS Amplify Deployment:** [https://main.d1fa52fy3h96m8.amplifyapp.com/](https://main.d1fa52fy3h96m8.amplifyapp.com/)  
+🌐 **Vercel Mirror:** [https://productivity-os-ai-l66g.vercel.app/](https://productivity-os-ai-l66g.vercel.app/)
 
 <br />
 
-[🚀 Live Website](https://productivity-os-ai-l66g.vercel.app/) · [✨ Features](#-core-modules) · [⚡ Quick Start](#-quick-start) · [🏗️ Architecture](#️-architecture)
+[🚀 Launch Live App](https://main.d1fa52fy3h96m8.amplifyapp.com/) · [✨ Features](#-core-modules) · [⚡ Quick Start](#-quick-start) · [🏗️ Architecture](#️-architecture)
 
 <br />
 
