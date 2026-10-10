@@ -13,12 +13,9 @@
 
 <br />
 
-### 🌐 Live Application URLs
+### 🌐 Live Production URL
 
-| Platform | Live Deployment Link | Status |
-| :--- | :--- | :--- |
-| **AWS Amplify (Primary)** | **[https://main.d1fa52fy3h96m8.amplifyapp.com/](https://main.d1fa52fy3h96m8.amplifyapp.com/)** | 🟢 Live / Active |
-| **Vercel (Mirror)** | **[https://productivity-os-ai-l66g.vercel.app/](https://productivity-os-ai-l66g.vercel.app/)** | 🟢 Live / Active |
+👉 **[https://main.d1fa52fy3h96m8.amplifyapp.com/](https://main.d1fa52fy3h96m8.amplifyapp.com/)**
 
 <br />
 
