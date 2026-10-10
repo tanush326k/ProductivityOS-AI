@@ -440,7 +440,7 @@ export const TaskBoard: React.FC = () => {
                 <div className="space-y-2.5 max-h-48 overflow-y-auto pr-1 scrollbar">
                   {selectedTask.subtasks.length === 0 ? (
                     <div className="text-center py-6 text-xs text-neutral-500 italic">
-                      No steps drafted. Click "Generate AI Checklist" to let Gemini break it down.
+                      No steps drafted. Click "Generate AI Checklist" to let Groq AI break it down.
                     </div>
                   ) : (
                     selectedTask.subtasks.map((st) => (

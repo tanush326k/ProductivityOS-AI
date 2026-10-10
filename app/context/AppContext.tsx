@@ -1,6 +1,8 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
+import toast from "react-hot-toast";
+import { callAiApi } from "../lib/api";
 
 // Types
 export interface Subtask {
@@ -290,18 +292,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // AI Autopilot: Auto-prioritize, tag, and estimate time for all tasks
   const aiAutopilot = async () => {
     addLog("Initiating AI Task Autopilot...", "ai");
+    const toastId = toast.loading("Analyzing tasks with Groq AI...");
     try {
-      const response = await fetch("/api/gemini", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "task_prioritize",
-          payload: { tasks: tasks.map(t => ({ id: t.id, title: t.title, description: t.description })) }
-        })
-      });
-      const data = await response.json();
-      if (data.error) throw new Error(data.error);
-
       interface AIResult {
         id: string;
         priority: Task["priority"];
@@ -309,7 +301,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         aiTags: string[];
       }
 
-      const predictions: AIResult[] = data.result;
+      const predictions = await callAiApi<AIResult[]>("task_prioritize", {
+        tasks: tasks.map(t => ({ id: t.id, title: t.title, description: t.description }))
+      });
+
       setTasks(prev => {
         const updated = prev.map(t => {
           const pred = predictions.find(p => p.id === t.id);
@@ -326,9 +321,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         saveToLocal("p_tasks", updated);
         return updated;
       });
+      toast.success("Tasks prioritized & estimated by AI!", { id: toastId });
       addLog("AI Task Autopilot completed: tasks prioritized, tagged, and estimated.", "ai");
     } catch (e: any) {
       console.error(e);
+      toast.error(e.message || "Autopilot failed", { id: toastId });
       addLog(`AI Task Autopilot failed: ${e.message || "Unknown error"}`, "ai");
     }
   };
@@ -339,19 +336,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (!task) return;
     
     addLog(`AI generating subtasks for "${task.title}"...`, "ai");
+    const toastId = toast.loading(`Drafting subtasks for "${task.title}"...`);
     try {
-      const response = await fetch("/api/gemini", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "task_breakdown",
-          payload: { title: task.title, description: task.description }
-        })
+      const items = await callAiApi<string[]>("task_breakdown", {
+        title: task.title,
+        description: task.description
       });
-      const data = await response.json();
-      if (data.error) throw new Error(data.error);
 
-      const items: string[] = data.result;
       const generatedSubtasks: Subtask[] = items.map((title, i) => ({
         id: `sub-${taskId}-${Date.now()}-${i}`,
         title,
@@ -368,9 +359,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         saveToLocal("p_tasks", updated);
         return updated;
       });
+      toast.success(`Generated ${generatedSubtasks.length} subtasks!`, { id: toastId });
       addLog(`AI successfully generated ${generatedSubtasks.length} subtasks for "${task.title}".`, "ai");
     } catch (e: any) {
       console.error(e);
+      toast.error(e.message || "Checklist generation failed", { id: toastId });
       addLog(`Subtask generation failed: ${e.message || "Unknown error"}`, "ai");
     }
   };
@@ -412,22 +405,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // AI Schedule Optimizer
   const aiOptimizePlanner = async () => {
     addLog("Requesting AI Planner Optimization...", "ai");
+    const toastId = toast.loading("Optimizing your daily timeline...");
     try {
-      const response = await fetch("/api/gemini", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "planner_optimize",
-          payload: {
-            tasks: tasks.filter(t => t.status !== "done").map(t => ({ id: t.id, title: t.title, priority: t.priority, estimatedTime: t.estimatedTime })),
-            currentEvents: plannerEvents
-          }
-        })
+      const result = await callAiApi<any[]>("planner_optimize", {
+        tasks: tasks.filter(t => t.status !== "done").map(t => ({ id: t.id, title: t.title, priority: t.priority, estimatedTime: t.estimatedTime })),
+        currentEvents: plannerEvents
       });
-      const data = await response.json();
-      if (data.error) throw new Error(data.error);
 
-      const optimizedEvents: PlannerEvent[] = data.result.map((e: any, idx: number) => ({
+      const optimizedEvents: PlannerEvent[] = result.map((e: any, idx: number) => ({
         id: `e-opt-${Date.now()}-${idx}`,
         title: e.title,
         start: e.start,
@@ -438,9 +423,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
       setPlannerEvents(optimizedEvents);
       saveToLocal("p_events", optimizedEvents);
+      toast.success("Schedule optimized with focus & break blocks!", { id: toastId });
       addLog("Planner schedule optimized: workloads balanced & rest breaks inserted.", "ai");
     } catch (e: any) {
       console.error(e);
+      toast.error(e.message || "Schedule optimization failed", { id: toastId });
       addLog(`Planner optimization failed: ${e.message || "Unknown error"}`, "ai");
     }
   };
@@ -587,26 +574,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         .map(m => ({ role: m.role, content: m.content }));
       chatHistory.push({ role: "user", content: text });
 
-      const response = await fetch("/api/gemini", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "chat",
-          payload: {
-            history: chatHistory,
-            currentTasks: tasks.map(t => `[${t.status}] ${t.title} (${t.priority} priority)`),
-            currentPlanner: plannerEvents.map(e => `${e.start} for ${e.duration}m: ${e.title}`)
-          }
-        })
+      const reply = await callAiApi<string>("chat", {
+        history: chatHistory,
+        currentTasks: tasks.map(t => `[${t.status}] ${t.title} (${t.priority} priority)`),
+        currentPlanner: plannerEvents.map(e => `${e.start} for ${e.duration}m: ${e.title}`)
       });
-
-      const data = await response.json();
-      if (data.error) throw new Error(data.error);
 
       setMessages(prev => {
         const list = prev.map(m => {
           if (m.id === tempAssistantMsg.id) {
-            return { ...m, content: data.result };
+            return { ...m, content: reply };
           }
           return m;
         });
@@ -619,7 +596,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       setMessages(prev => {
         const list = prev.map(m => {
           if (m.id === tempAssistantMsg.id) {
-            return { ...m, content: `Error: Unable to load AI assistant feedback. ${e.message || ""}` };
+            return { ...m, content: `Error: ${e.message || "Unable to reach AI assistant."}` };
           }
           return m;
         });

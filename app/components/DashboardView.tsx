@@ -15,6 +15,9 @@ import {
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
+import toast from "react-hot-toast";
+import { callAiApi } from "../lib/api";
+
 export const DashboardView: React.FC = () => {
   const { tasks, activityLog, aiAutopilot, addLog } = useApp();
   const [loading, setLoading] = useState<boolean>(false);
@@ -29,20 +32,25 @@ export const DashboardView: React.FC = () => {
   const completionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
   const focusTimeHrs = Math.round(tasks.reduce((acc, t) => acc + (t.status === "done" ? t.estimatedTime : 0), 0) / 60);
 
-  // Trigger Gemini AI Coach Recommendations
+  // Trigger Groq AI Coach Recommendations
   const fetchCoachInsights = async () => {
     setLoadingCoach(true);
     setCoachInsight("");
     addLog("Requesting AI Productivity Coach insights...", "ai");
+    const toastId = toast.loading("Analyzing workspace metrics with Groq AI...");
     try {
-      const response = await fetch("/api/coach", { method: "POST" });
-      const data = await response.json();
-      if (data.error) throw new Error(data.error);
-      setCoachInsight(data.result);
+      const insight = await callAiApi<string>("insights", {
+        tasksCompleted: completedTasks,
+        totalTasks,
+        focusHours: focusTimeHrs,
+        history: activityLog.slice(0, 10),
+      });
+      setCoachInsight(insight);
+      toast.success("Productivity evaluation ready!", { id: toastId });
       addLog("Received AI productivity feedback.", "ai");
     } catch (e: any) {
       console.error(e);
-      setError(e.message || "Failed to fetch AI insights.");
+      toast.error(e.message || "Failed to fetch AI insights.", { id: toastId });
       addLog("Failed to fetch AI productivity feedback.", "ai");
     } finally {
       setLoadingCoach(false);

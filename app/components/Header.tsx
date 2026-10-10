@@ -2,25 +2,23 @@
 
 import React from "react";
 import { useApp } from "../context/AppContext";
-import { Sparkles, CheckCircle2, ShieldAlert, Cpu } from "lucide-react";
+import { Sparkles, CheckCircle2, Zap } from "lucide-react";
 
 export const Header: React.FC = () => {
-  const { activeView, tasks, automations } = useApp();
+  const { activeView, tasks } = useApp();
 
   const viewTitles: Record<string, string> = {
     dashboard: "Productivity Insights Dashboard",
-    assistant: "AI Personal Assistant & Agent",
-    tasks: "AI Task Manager & Board",
+    assistant: "AI Workspace Assistant",
+    tasks: "AI Task Board & Kanban",
     planner: "Smart Daily Planner",
-    notes: "Meeting Notes Summarizer & Sync",
-    email: "Professional Email Generator",
-    docs: "Document summarizer tool",
-    automations: "Workflow Automation rules",
-    team: "Collaborative Team Workspace",
+    notes: "AI Productivity Studio",
+    docs: "AI Productivity Studio",
+    email: "AI Productivity Studio",
+    studio: "AI Productivity Studio",
   };
 
   const completedCount = tasks.filter((t) => t.status === "done").length;
-  const activeAutosCount = automations.filter((a) => a.active).length;
 
   return (
     <header className="h-20 border-b border-neutral-800/80 px-8 flex items-center justify-between glass-panel sticky top-0 z-30">
@@ -30,36 +28,28 @@ export const Header: React.FC = () => {
           {viewTitles[activeView] || "Productivity Workspace"}
         </h2>
         <p className="text-xs text-neutral-400">
-          Streamlining focus and task velocity using GenAI.
+          Accelerated focus & task velocity powered by Groq & OpenAI gpt-oss-120b.
         </p>
       </div>
 
       {/* Metrics & Badges */}
-      <div className="flex items-center gap-6 text-sm">
-        {/* Active Rules Indicator */}
-        <div className="hidden md:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-neutral-900 border border-neutral-800">
-          <Cpu className="w-3.5 h-3.5 text-violet-400" />
-          <span className="text-xs text-neutral-400 font-medium">
-            Automations: <strong className="text-violet-400">{activeAutosCount}</strong>
-          </span>
-        </div>
-
+      <div className="flex items-center gap-4 text-sm">
         {/* Task Metric */}
-        <div className="hidden md:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-neutral-900 border border-neutral-800">
+        <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-neutral-900 border border-neutral-800">
           <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
           <span className="text-xs text-neutral-400 font-medium">
-            Completed:{" "}
+            Done:{" "}
             <strong className="text-emerald-400">
               {completedCount}/{tasks.length}
             </strong>
           </span>
         </div>
 
-        {/* Gemini Status Badge */}
+        {/* AI Status Badge */}
         <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
           <Sparkles className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
           <span className="text-xs font-semibold uppercase tracking-wider">
-            Gemini 2.5 Active
+            Groq gpt-oss-120b Active
           </span>
         </div>
       </div>

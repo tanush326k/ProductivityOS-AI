@@ -1,21 +1,85 @@
-import { GoogleGenAI } from "@google/genai";
 import { NextResponse } from "next/server";
+import { groq, DEFAULT_GROQ_MODEL } from "@/app/lib/groq";
+import { GoogleGenAI } from "@google/genai";
 
-// Initialize the Google Gen AI client with the API key from environment variables
-const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY || "",
-});
+// Initialize Gemini client as fallback if key exists
+const geminiApiKey = process.env.GEMINI_API_KEY || "";
+const geminiAi = geminiApiKey ? new GoogleGenAI({ apiKey: geminiApiKey }) : null;
 
-const MODEL_NAME = "gemini-2.5-flash";
+// Clean and extract valid JSON objects or arrays from LLM response
+function parseJsonFromText(rawText: string) {
+  let cleaned = rawText.trim();
+  if (cleaned.startsWith("```json")) {
+    cleaned = cleaned.replace(/^```json\s*/i, "").replace(/```\s*$/, "").trim();
+  } else if (cleaned.startsWith("```")) {
+    cleaned = cleaned.replace(/^```\s*/, "").replace(/```\s*$/, "").trim();
+  }
+
+  try {
+    return JSON.parse(cleaned);
+  } catch {
+    const match = cleaned.match(/(\[[\s\S]*\]|\{[\s\S]*\})/);
+    if (match) {
+      const parsed = JSON.parse(match[1]);
+      if (Array.isArray(parsed)) return parsed;
+      if (parsed.result && Array.isArray(parsed.result)) return parsed.result;
+      if (parsed.tasks && Array.isArray(parsed.tasks)) return parsed.tasks;
+      if (parsed.events && Array.isArray(parsed.events)) return parsed.events;
+      if (parsed.subtasks && Array.isArray(parsed.subtasks)) return parsed.subtasks;
+      return parsed;
+    }
+    throw new Error(`Failed to parse AI JSON response: ${rawText}`);
+  }
+}
+
+// Unified AI generator that prioritizes Groq (openai/gpt-oss-120b) with fallback to Gemini
+async function generateAIText(prompt: string, systemPrompt?: string): Promise<string> {
+  const hasGroqKey = Boolean(process.env.GROQ_API_KEY || process.env.GROK_API_KEY);
+
+  if (hasGroqKey) {
+    const messages: Array<{ role: "system" | "user"; content: string }> = [];
+    if (systemPrompt) {
+      messages.push({ role: "system", content: systemPrompt });
+    }
+    messages.push({ role: "user", content: prompt });
+
+    const completion = await groq.chat.completions.create({
+      model: DEFAULT_GROQ_MODEL,
+      messages,
+      temperature: 1,
+      max_completion_tokens: 2048,
+      top_p: 1,
+      reasoning_effort: "medium",
+    });
+
+    return completion.choices[0]?.message?.content || "";
+  }
+
+  if (geminiAi) {
+    const combined = systemPrompt ? `${systemPrompt}\n\n${prompt}` : prompt;
+    const response = await geminiAi.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: combined,
+    });
+    return response.text || "";
+  }
+
+  throw new Error(
+    "No AI API key found. Please configure GROQ_API_KEY (or GEMINI_API_KEY) in .env.local"
+  );
+}
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { action, payload } = body;
 
-    if (!process.env.GEMINI_API_KEY) {
+    const hasGroqKey = Boolean(process.env.GROQ_API_KEY || process.env.GROK_API_KEY);
+    const hasGeminiKey = Boolean(process.env.GEMINI_API_KEY);
+
+    if (!hasGroqKey && !hasGeminiKey) {
       return NextResponse.json(
-        { error: "GEMINI_API_KEY is not configured on the server." },
+        { error: "GROQ_API_KEY is not configured on the server. Please check .env.local" },
         { status: 500 }
       );
     }
@@ -32,9 +96,8 @@ export async function POST(request: Request) {
     switch (action) {
       case "chat": {
         const { history, currentTasks, currentPlanner } = payload;
-        
-        // Build systemic context
-        const contextPrompt = `You are "ProductivityOS AI", a premium workspace companion integrated directly into the user's dashboard.
+
+        const systemPrompt = `You are "ProductivityOS AI", a workspace companion powered by Groq and ${DEFAULT_GROQ_MODEL} integrated directly into the user's dashboard.
 You help them manage tasks, plan schedules, write emails, and guide their daily workflow.
 
 Current Workspace Context:
@@ -47,20 +110,46 @@ Instructions:
 3. If they ask you to create a task, guide them to use the Task Manager or offer to draft the details.
 4. Avoid verbose preambles. Be highly professional, crisp, and helpful.`;
 
-        // Format history for `@google/genai`
-        // In the new SDK, contents is an array of content objects or simple strings.
-        // Let's pass the history as a combined prompt to keep it robust and simple, or format it.
-        const chatPrompt = `${contextPrompt}\n\nChat History:\n${history
-          .map((m: any) => `${m.role === "user" ? "User" : "AI"}: ${m.content}`)
-          .join("\n")}\nAI:`;
+        if (hasGroqKey) {
+          const messages: Array<{ role: "system" | "user" | "assistant"; content: string }> = [
+            { role: "system", content: systemPrompt },
+          ];
 
-        const response = await ai.models.generateContent({
-          model: MODEL_NAME,
-          contents: chatPrompt,
-        });
-        
-        resultText = response.text || "I'm sorry, I couldn't generate a response.";
-        return NextResponse.json({ result: resultText });
+          for (const m of history) {
+            messages.push({
+              role: m.role === "user" ? "user" : "assistant",
+              content: m.content,
+            });
+          }
+
+          const completion = await groq.chat.completions.create({
+            model: DEFAULT_GROQ_MODEL,
+            messages,
+            temperature: 1,
+            max_completion_tokens: 2048,
+            top_p: 1,
+            reasoning_effort: "medium",
+          });
+
+          resultText = completion.choices[0]?.message?.content || "I'm sorry, I couldn't generate a response.";
+          return NextResponse.json({ result: resultText, provider: "groq", model: DEFAULT_GROQ_MODEL });
+        }
+
+        if (geminiAi) {
+          const chatPrompt = `${systemPrompt}\n\nChat History:\n${history
+            .map((m: any) => `${m.role === "user" ? "User" : "AI"}: ${m.content}`)
+            .join("\n")}\nAI:`;
+
+          const response = await geminiAi.models.generateContent({
+            model: "gemini-2.5-flash",
+            contents: chatPrompt,
+          });
+
+          resultText = response.text || "I'm sorry, I couldn't generate a response.";
+          return NextResponse.json({ result: resultText, provider: "gemini" });
+        }
+
+        break;
       }
 
       case "task_prioritize": {
@@ -73,7 +162,7 @@ For each task, perform the following:
 2. Assign a priority: 'low', 'medium', 'high', or 'urgent'.
 3. Generate 1 to 3 relevant, lowercase tag strings (e.g. 'design', 'frontend', 'backend', 'marketing', 'doc', 'testing').
 
-Return the result STRICTLY as a JSON array of objects. Do not wrap in markdown code blocks.
+Return the result STRICTLY as a JSON array of objects. Do not include markdown code blocks or explanations.
 Format:
 [
   {
@@ -84,15 +173,8 @@ Format:
   }
 ]`;
 
-        const response = await ai.models.generateContent({
-          model: MODEL_NAME,
-          contents: prompt,
-          config: {
-            responseMimeType: "application/json",
-          }
-        });
-
-        const parsed = JSON.parse(response.text || "[]");
+        const raw = await generateAIText(prompt, "You are a precise task prioritization assistant. Output strictly valid JSON.");
+        const parsed = parseJsonFromText(raw);
         return NextResponse.json({ result: parsed });
       }
 
@@ -102,22 +184,15 @@ Format:
 Task Title: "${title}"
 Description: "${description || "No description provided."}"
 
-Return the result STRICTLY as a JSON array of strings. Do not wrap in markdown code blocks.
+Return the result STRICTLY as a JSON array of strings. Do not include extra text or markdown wrapping.
 Format:
 [
   "Subtask title 1",
   "Subtask title 2"
 ]`;
 
-        const response = await ai.models.generateContent({
-          model: MODEL_NAME,
-          contents: prompt,
-          config: {
-            responseMimeType: "application/json",
-          }
-        });
-
-        const parsed = JSON.parse(response.text || "[]");
+        const raw = await generateAIText(prompt, "You are an expert project manager. Output strictly a valid JSON array of subtask strings.");
+        const parsed = parseJsonFromText(raw);
         return NextResponse.json({ result: parsed });
       }
 
@@ -137,7 +212,7 @@ Instructions:
 4. Keep the morning 'Morning Standup & Sync' (09:30 - 10:00) if it is in the current setup, or schedule it.
 5. Insert 10-15 minute rest breaks ('Break') between long work periods.
 6. The timeline MUST fit within 09:00 and 18:00.
-7. Return the events as a JSON array of objects.
+7. Return the events STRICTLY as a JSON array of objects.
 
 Format:
 [
@@ -150,15 +225,8 @@ Format:
   }
 ]`;
 
-        const response = await ai.models.generateContent({
-          model: MODEL_NAME,
-          contents: prompt,
-          config: {
-            responseMimeType: "application/json",
-          }
-        });
-
-        const parsed = JSON.parse(response.text || "[]");
+        const raw = await generateAIText(prompt, "You are a schedule optimization AI. Return strictly a JSON array of event objects.");
+        const parsed = parseJsonFromText(raw);
         return NextResponse.json({ result: parsed });
       }
 
@@ -177,12 +245,7 @@ Your output must include:
 
 Format everything in premium, readable markdown with bold text, clean lists, and dividers.`;
 
-        const response = await ai.models.generateContent({
-          model: MODEL_NAME,
-          contents: prompt,
-        });
-
-        resultText = response.text || "Failed to summarize meeting notes.";
+        resultText = await generateAIText(prompt, "You are an executive assistant specializing in meeting syntheses.");
         return NextResponse.json({ result: resultText });
       }
 
@@ -196,12 +259,7 @@ Format everything in premium, readable markdown with bold text, clean lists, and
 
 Return ONLY the email draft text (Subject Line and Email Body). Do not include any conversational intro/outro, notes, or bracketed instructions (like [Your Name]). Fill in placeholders with plausible details or keep them clean.`;
 
-        const response = await ai.models.generateContent({
-          model: MODEL_NAME,
-          contents: prompt,
-        });
-
-        resultText = response.text || "Failed to generate email.";
+        resultText = await generateAIText(prompt, "You are an executive communications specialist. Output only the email draft.");
         return NextResponse.json({ result: resultText });
       }
 
@@ -219,12 +277,7 @@ Generate a summary in the requested format: "${format}" (either "summary", "outl
 
 Keep the content crisp and format it beautifully in markdown.`;
 
-        const response = await ai.models.generateContent({
-          model: MODEL_NAME,
-          contents: prompt,
-        });
-
-        resultText = response.text || "Failed to summarize document.";
+        resultText = await generateAIText(prompt, "You are a document synthesis specialist.");
         return NextResponse.json({ result: resultText });
       }
 
@@ -243,12 +296,7 @@ Provide a highly customized, premium productivity evaluation:
 
 Format the output in clean, gorgeous markdown with small headings and a supportive, executive coaching tone.`;
 
-        const response = await ai.models.generateContent({
-          model: MODEL_NAME,
-          contents: prompt,
-        });
-
-        resultText = response.text || "Failed to generate AI insights.";
+        resultText = await generateAIText(prompt, "You are an executive productivity coach. Output in clean markdown.");
         return NextResponse.json({ result: resultText });
       }
 
@@ -259,9 +307,9 @@ Format the output in clean, gorgeous markdown with small headings and a supporti
         );
     }
   } catch (e: any) {
-    console.error("API Error in /api/gemini:", e);
+    console.error("API Error in AI Route:", e);
     return NextResponse.json(
-      { error: e.message || "An internal error occurred during the Gemini API call." },
+      { error: e.message || "An internal error occurred during the AI API call." },
       { status: 500 }
     );
   }

@@ -1,643 +1,155 @@
 <div align="center">
 
-<!-- Hero SVG Banner -->
-
 # 🧠 ProductivityOS AI
 
-### An AI-powered productivity workspace that helps individuals and teams plan, automate, summarize, collaborate, and accomplish more — using Generative AI.
+### High-Velocity Enterprise Productivity Workspace Powered by Groq & GenAI
+
+[![Next.js](https://img.shields.io/badge/Next.js-16.2-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS%20v4-38bdf8?style=for-the-badge&logo=tailwindcss)](https://tailwindcss.com/)
+[![Groq](https://img.shields.io/badge/Groq-Inference%20Engine-f97316?style=for-the-badge)](https://groq.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-emerald?style=for-the-badge)](LICENSE)
 
 <br />
 
-[![Next.js](https://img.shields.io/badge/Next.js-15-000000?style=flat-square&logo=next.js&logoColor=white)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Gemini AI](https://img.shields.io/badge/Google_Gemini-2.5_Flash-4285F4?style=flat-square&logo=google&logoColor=white)](https://ai.google.dev/)
-[![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev/)
-[![License](https://img.shields.io/badge/License-MIT-10b981?style=flat-square)](LICENSE)
+🌐 **Live Website:** [https://productivity-os-ai-l66g.vercel.app/](https://productivity-os-ai-l66g.vercel.app/)
 
 <br />
 
-🌐 **Live App:** https://productivity-os-ai-l66g.vercel.app/
+[🚀 Live Website](https://productivity-os-ai-l66g.vercel.app/) · [✨ Features](#-core-modules) · [⚡ Quick Start](#-quick-start) · [🏗️ Architecture](#️-architecture)
 
 <br />
-
-[🚀 Live Website](https://productivity-os-ai-l66g.vercel.app/) · [📖 Architecture](#-architecture) · [⚡ Quick Start](#-quick-start)
-
-<br />
-
----
 
 </div>
 
-<br />
+---
 
-## 📋 Table of Contents
+## 📖 Overview
 
-- [Features](#-features)
-- [Architecture](#-architecture)
-- [AI Workflow](#-ai-workflow)
-- [Tech Stack](#-tech-stack)
-- [Core Modules](#-core-modules)
-- [Folder Structure](#-folder-structure)
-- [Quick Start](#-quick-start)
-- [Environment Variables](#-environment-variables)
-- [Development](#-development)
-- [Security](#-security)
-- [Accessibility](#-accessibility)
-- [Performance](#-performance)
-- [Roadmap](#-roadmap)
-- [License](#-license)
+**ProductivityOS AI** is an all-in-one generative AI productivity workspace engineered to eliminate context switching and streamline task execution.
 
-<br />
-
-> **Dashboard** — AI Insights, Focus Time Velocity chart, real-time activity log, and AI Productivity Coach  
-> **Task Board** — 4-column Kanban with AI Autopilot, AI Subtask generation, and priority badges  
-> **AI Assistant** — Context-aware conversational agent with workspace state awareness  
-> **Daily Planner** — Visual schedule board (09:00–18:00) with AI Schedule Optimizer  
-> **Meeting Summarizer** — Paste notes → AI executive summary → Sync action items to Task Board  
-> **Email Generator** — Configurable tone, length, and recipient with one-click copy  
-> **Workflow Automation** — Trigger-action rules with developer sandbox simulator  
-> **Team Workspace** — Collaborator cards with workload indicators and collaboration stream  
-
-</details>
-
-<br />
+Powered by **Groq's ultra-low latency inference engine** running `openai/gpt-oss-120b` (with automated Gemini fallback), ProductivityOS AI helps individuals and engineering teams organize backlogs, auto-estimate workloads, generate structured checklists, optimize daily timelines, synthesize meeting notes, and compose professional communications in sub-second responses.
 
 ---
 
-## ✨ Features
+## ✨ Core Modules
 
-<table>
-  <tr>
-    <td align="center" width="25%">
-      <br />
-      <strong>🎯 AI Task Manager</strong><br />
-      <sub>4-column Kanban board with AI Autopilot for auto-prioritization, AI-generated subtask checklists, priority badges, progress tracking, and estimated time</sub>
-    </td>
-    <td align="center" width="25%">
-      <br />
-      <strong>🤖 AI Personal Assistant</strong><br />
-      <sub>Context-aware conversational agent with full workspace state — tasks, planner events, chat history — for intelligent planning guidance</sub>
-    </td>
-    <td align="center" width="25%">
-      <br />
-      <strong>📅 Smart Daily Planner</strong><br />
-      <sub>Visual timeline schedule board (09:00–18:00) with AI Schedule Optimizer that balances workload, inserts breaks, and links tasks</sub>
-    </td>
-    <td align="center" width="25%">
-      <br />
-      <strong>📝 Meeting Summarizer</strong><br />
-      <sub>Paste raw meeting notes → AI generates executive summary with key decisions and action items → one-click sync to Task Board</sub>
-    </td>
-  </tr>
-  <tr>
-    <td align="center" width="25%">
-      <br />
-      <strong>📄 Document Summarizer</strong><br />
-      <sub>Condense long documents into summaries, hierarchical outlines, or Q&A flashcards with selectable output format</sub>
-    </td>
-    <td align="center" width="25%">
-      <br />
-      <strong>✉️ Email Generator</strong><br />
-      <sub>AI-drafted professional emails with configurable tone (5 options), length (3 levels), recipient, and quick-use presets</sub>
-    </td>
-    <td align="center" width="25%">
-      <br />
-      <strong>⚡ Workflow Automation</strong><br />
-      <sub>If/Then automation rules with triggers (task created/completed) and actions (draft email, add to planner, escalate priority)</sub>
-    </td>
-    <td align="center" width="25%">
-      <br />
-      <strong>👥 Team Workspace</strong><br />
-      <sub>Collaborator status dashboard with role assignments, workload indicators, and real-time collaboration activity stream</sub>
-    </td>
-  </tr>
-  <tr>
-    <td align="center" width="25%">
-      <br />
-      <strong>📊 Insights Dashboard</strong><br />
-      <sub>Workspace Focus Score, Total Focus Time, Task Completion Rate, AI Operations count, SVG velocity chart, and AI Coach</sub>
-    </td>
-    <td align="center" width="25%">
-      <br />
-      <strong>🎨 Premium Dark UI</strong><br />
-      <sub>Glassmorphism cards, gradient borders, dot-matrix backgrounds, shimmer loaders, and smooth slide-up animations</sub>
-    </td>
-    <td align="center" width="25%">
-      <br />
-      <strong>💾 Persistent State</strong><br />
-      <sub>All tasks, planner events, automations, chat history, and activity logs are persisted via LocalStorage across sessions</sub>
-    </td>
-    <td align="center" width="25%">
-      <br />
-      <strong>🔄 Real-Time Activity</strong><br />
-      <sub>Workspace-wide activity log tracking user actions, AI operations, and automation triggers with timestamps</sub>
-    </td>
-  </tr>
-</table>
+The platform is organized into five streamlined, intuitive workspace modules:
 
-<br />
+### 1. 📊 Productivity Insights Dashboard
+- **Executive AI Coach**: Analyzes task velocity, completion trends, and focus metrics to deliver personalized strengths, bottlenecks, and actionable weekly recommendations.
+- **Velocity Metrics**: Visual trackers for completion percentage, active workloads, and total focus hours.
+- **Activity Log**: Real-time audit trail of user actions and AI agent executions.
+
+### 2. 📋 AI Task Board & Kanban
+- **Visual Kanban Board**: Drag, reorder, and update tasks across `Todo`, `In Progress`, `Review`, and `Done` swimlanes.
+- **⚡ AI Autopilot**: 1-click batch analysis that estimates completion time in minutes, assigns priorities (`low`, `medium`, `high`, `urgent`), and generates contextual tags.
+- **🔨 AI Subtask Checklist Generator**: Generates concrete, step-by-step subtask checklists directly inside any task card.
+
+### 3. 🤖 AI Workspace Assistant
+- **Context-Aware Chat**: Directly references your current tasks, timeline, and priorities to provide tailored guidance.
+- **Instant Suggestions**: Quick starter prompts for standup summaries, workload reviews, and action items.
+- **Action-Oriented Markdown**: Clean, formatted replies ready for immediate execution.
+
+### 4. 📅 Smart Daily Planner
+- **Interactive Timeline**: Plan schedule blocks from 09:00 to 18:00 with categorized tags (`work`, `meeting`, `break`, `personal`).
+- **✨ AI Schedule Optimizer**: Automatically distributes high-priority tasks during peak morning focus, balances workloads, and schedules lunch and rest breaks.
+
+### 5. 🪄 AI Productivity Studio
+Unified workspace consolidating essential communication and document tools:
+- **📝 Meeting Notes Summarizer**: Converts unstructured transcripts into executive summaries, key decisions, and action items with a **1-click sync to your Kanban board**.
+- **📄 Document Analyzer**: Synthesizes lengthy documents into concise summaries, hierarchical outlines, or Q&A study flashcards.
+- **✉️ Professional Email Drafter**: Composes executive emails tailored by audience, tone (`Professional`, `Friendly`, `Urgent`, `Persuasive`, `Casual`), and length.
 
 ---
 
-## 🏗 Architecture
-
-### High-Level Architecture
-
-```mermaid
-graph TD
-    A["🌐 Browser Client"] --> B["⚛️ Next.js 15 App Router"]
-    B --> C["🎨 React 19 Components"]
-    C --> D["📦 AppContext Provider"]
-    D --> E["💾 LocalStorage Persistence"]
-    B --> F["🔌 API Route /api/gemini"]
-    F --> G["🧠 Google Gemini 2.5 Flash"]
-    C --> H["🖌️ Tailwind CSS 4 + Custom CSS"]
-
-    style A fill:#1e1b4b,stroke:#8b5cf6,color:#fff
-    style B fill:#0c0a09,stroke:#8b5cf6,color:#fff
-    style C fill:#0c0a09,stroke:#8b5cf6,color:#fff
-    style D fill:#0c0a09,stroke:#8b5cf6,color:#fff
-    style E fill:#0c0a09,stroke:#10b981,color:#fff
-    style F fill:#0c0a09,stroke:#8b5cf6,color:#fff
-    style G fill:#1e3a5f,stroke:#4285f4,color:#fff
-    style H fill:#0c0a09,stroke:#06b6d4,color:#fff
-```
-
-### Component Architecture
-
-```mermaid
-graph LR
-    RootLayout["RootLayout"] --> AppProvider["AppProvider"]
-    AppProvider --> Workspace["Workspace Page"]
-    Workspace --> Sidebar["Sidebar"]
-    Workspace --> Header["Header"]
-    Workspace --> MainContent["MainContent Router"]
-
-    MainContent --> DashboardView["DashboardView"]
-    MainContent --> AssistantView["AssistantView"]
-    MainContent --> TaskBoard["TaskBoard"]
-    MainContent --> PlannerView["PlannerView"]
-    MainContent --> SummarizersView["SummarizersView"]
-    MainContent --> EmailView["EmailView"]
-    MainContent --> AutomationsView["AutomationsView"]
-    MainContent --> TeamView["TeamView"]
-
-    style RootLayout fill:#0c0a09,stroke:#8b5cf6,color:#fff
-    style AppProvider fill:#1e1b4b,stroke:#8b5cf6,color:#fff
-    style Workspace fill:#0c0a09,stroke:#8b5cf6,color:#fff
-    style Sidebar fill:#0c0a09,stroke:#a78bfa,color:#fff
-    style Header fill:#0c0a09,stroke:#a78bfa,color:#fff
-    style MainContent fill:#0c0a09,stroke:#a78bfa,color:#fff
-    style DashboardView fill:#0c0a09,stroke:#10b981,color:#fff
-    style AssistantView fill:#0c0a09,stroke:#10b981,color:#fff
-    style TaskBoard fill:#0c0a09,stroke:#10b981,color:#fff
-    style PlannerView fill:#0c0a09,stroke:#10b981,color:#fff
-    style SummarizersView fill:#0c0a09,stroke:#10b981,color:#fff
-    style EmailView fill:#0c0a09,stroke:#10b981,color:#fff
-    style AutomationsView fill:#0c0a09,stroke:#10b981,color:#fff
-    style TeamView fill:#0c0a09,stroke:#10b981,color:#fff
-```
-
-<br />
-
----
-
-## 🤖 AI Workflow
-
-### AI Request Flow
-
-```mermaid
-sequenceDiagram
-    participant U as 👤 User
-    participant C as ⚛️ React Component
-    participant CTX as 📦 AppContext
-    participant API as 🔌 /api/gemini
-    participant AI as 🧠 Gemini 2.5 Flash
-
-    U->>C: Triggers AI action
-    C->>CTX: Calls context method
-    CTX->>API: POST with action + payload
-    API->>API: Validate request & API key
-    API->>AI: generateContent with structured prompt
-    AI-->>API: JSON or Markdown response
-    API-->>CTX: Parsed result
-    CTX->>CTX: Update state & LocalStorage
-    CTX-->>C: Re-render with new data
-    C-->>U: Display AI output
-```
-
-### Application State Flow
-
-```mermaid
-stateDiagram-v2
-    [*] --> Dashboard: App Launch
-    Dashboard --> TaskBoard: Navigate
-    Dashboard --> Assistant: Navigate
-    Dashboard --> Planner: Navigate
-    Dashboard --> Summarizers: Navigate
-    Dashboard --> EmailGen: Navigate
-    Dashboard --> Automations: Navigate
-    Dashboard --> Team: Navigate
-
-    TaskBoard --> AIAutopilot: Trigger AI
-    AIAutopilot --> TaskBoard: Priorities Updated
-
-    TaskBoard --> SubtaskGen: Generate Checklist
-    SubtaskGen --> TaskBoard: Subtasks Added
-
-    Planner --> ScheduleOptimizer: Optimize
-    ScheduleOptimizer --> Planner: Schedule Rebuilt
-
-    Summarizers --> MeetingSummary: Summarize Notes
-    MeetingSummary --> TaskBoard: Sync Action Items
-
-    Automations --> TriggerSim: Simulate
-    TriggerSim --> Assistant: Auto-draft Email
-    TriggerSim --> Planner: Auto-block Calendar
-```
-
-### AI Capabilities
-
-| AI Action | Input | Output | Model Config |
-|:----------|:------|:-------|:-------------|
-| **Chat Assistant** | User query + workspace context | Context-aware markdown response | `text` output |
-| **Task Autopilot** | All tasks (id, title, description) | Priority, estimated time, AI tags per task | `application/json` |
-| **Subtask Breakdown** | Task title + description | 3–6 actionable subtask strings | `application/json` |
-| **Schedule Optimizer** | Uncompleted tasks + current events | Optimized daily timeline (09:00–18:00) | `application/json` |
-| **Meeting Summarizer** | Raw meeting notes text | Executive summary + decisions + action items | `text` (markdown) |
-| **Email Generator** | Prompt, recipient, tone, length | Complete email draft (subject + body) | `text` output |
-| **Document Summarizer** | Raw document text + format type | Summary, outline, or flashcards | `text` (markdown) |
-| **Productivity Coach** | Completed/total tasks, focus hours, logs | Strengths, bottlenecks, 3 action tips | `text` (markdown) |
-
-<br />
-
----
-
-## 🛠 Tech Stack
-
-| Layer | Technology | Version | Purpose |
-|:------|:-----------|:--------|:--------|
-| **Framework** | Next.js | 15 | App Router, API Routes, Server Components |
-| **Language** | TypeScript | 5 | Strict type safety across the codebase |
-| **UI Library** | React | 19 | Component architecture and state management |
-| **Styling** | Tailwind CSS | 4 | Utility-first styling with custom design system |
-| **AI Engine** | Google Gemini | 2.5 Flash | Generative AI for all intelligent features |
-| **AI SDK** | @google/genai | 2.11+ | Official Google Gen AI JavaScript SDK |
-| **Icons** | Lucide React | 1.25+ | Consistent, tree-shakeable SVG icon library |
-| **Animation** | Framer Motion | 12 | Smooth page transitions and micro-animations |
-| **Notifications** | React Hot Toast | 2.6 | Non-blocking toast notification system |
-| **Skeletons** | React Loading Skeleton | 3.5 | Shimmer loading states for async operations |
-| **Validation** | Zod | 4.4 | Runtime schema validation for data integrity |
-| **State** | React Context API | — | Centralized application state management |
-| **Persistence** | LocalStorage | — | Client-side data persistence across sessions |
-
-<br />
-
----
-
-## 📦 Core Modules
-
-| Module | Component | Description |
-|:-------|:----------|:------------|
-| **Dashboard** | `DashboardView` | 4 metric cards (Focus Score, Focus Time, Completion Rate, AI Ops), SVG velocity chart, real-time activity log, AI Productivity Coach with on-demand analysis |
-| **AI Assistant** | `AssistantView` | Chat interface with workspace context injection, suggested commands, loading dots animation, message history, and clear conversation |
-| **Task Manager** | `TaskBoard` | 4-column Kanban (To Do → In Progress → Review → Done), task creation modal, task detail modal with status switcher, AI Autopilot, AI Subtask generation |
-| **Daily Planner** | `PlannerView` | Agenda sidebar + visual schedule board (09:00–18:00 grid), event creation with task linking, AI Schedule Optimizer |
-| **Meeting Notes** | `SummarizersView` (tab 1) | Raw notes input with sample preload, AI executive summary, action item extraction, one-click sync to Task Board |
-| **Document AI** | `SummarizersView` (tab 2) | Document input with sample preload, 3 output formats (summary/outline/flashcards), clipboard copy |
-| **Email Generator** | `EmailView` | 3 quick presets, configurable tone (5 options) and length (3 levels), recipient field, AI draft with clipboard copy |
-| **Automations** | `AutomationsView` | If/Then rule builder, activation toggle, delete, developer sandbox with trigger simulation |
-| **Team** | `TeamView` | Member cards with status indicators (online/meeting/offline), workload labels, add member form, collaboration activity stream |
-| **Sidebar** | `Sidebar` | Navigation menu with active state indicators, brand header, profile footer |
-| **Header** | `Header` | Dynamic view title, task completion badge, automation count, Gemini status indicator |
-| **Context** | `AppContext` | Centralized state provider for tasks, planner, automations, chat, team, and activity logs with full CRUD + AI integrations |
-
-<br />
-
----
-
-## 📁 Folder Structure
+## 🏗️ Architecture
 
 ```
-ProductivityOS-AI/
+ProductivityOS AI
 ├── app/
 │   ├── api/
-│   │   └── gemini/
-│   │       └── route.ts            # Unified AI API endpoint (8 actions)
+│   │   ├── gemini/route.ts       # Unified AI backend (Groq + Gemini fallback)
+│   │   └── groq/route.ts         # Direct Groq route alias
 │   ├── components/
-│   │   ├── AssistantView.tsx       # AI chat assistant interface
-│   │   ├── AutomationsView.tsx     # Workflow automation rules engine
-│   │   ├── DashboardView.tsx       # Insights dashboard with metrics & AI coach
-│   │   ├── EmailView.tsx           # AI email generator with presets
-│   │   ├── Header.tsx              # Dynamic header with live metrics
-│   │   ├── PlannerView.tsx         # Smart daily planner with schedule board
-│   │   ├── Sidebar.tsx             # Navigation sidebar with brand identity
-│   │   ├── SummarizersView.tsx     # Meeting & document summarizer (tabbed)
-│   │   ├── TaskBoard.tsx           # Kanban task board with AI features
-│   │   └── TeamView.tsx            # Team collaboration workspace
+│   │   ├── DashboardView.tsx     # Performance analytics & AI Coach
+│   │   ├── TaskBoard.tsx         # Kanban board + Autopilot + Subtask breakdown
+│   │   ├── AssistantView.tsx     # Context-aware chat companion
+│   │   ├── PlannerView.tsx       # Timeline scheduler & AI optimizer
+│   │   ├── SummarizersView.tsx   # AI Studio (Meeting Notes, Docs, Emails)
+│   │   ├── Sidebar.tsx           # Streamlined 5-tab navigation
+│   │   └── Header.tsx            # Workspace status & live AI engine badge
 │   ├── context/
-│   │   └── AppContext.tsx          # Global state provider (685 lines)
-│   ├── globals.css                 # Design system: glassmorphism, animations
-│   ├── layout.tsx                  # Root layout with fonts & toast provider
-│   └── page.tsx                    # Main workspace shell with view routing
-├── public/                         # Static assets
-├── .env.local                      # Environment variables (gitignored)
-├── .gitignore
-├── eslint.config.mjs
-├── next.config.ts
-├── package.json
-├── postcss.config.mjs
-└── tsconfig.json
+│   │   └── AppContext.tsx        # Central workspace state & local persistence
+│   ├── lib/
+│   │   ├── api.ts                # Robust, type-safe client API wrapper
+│   │   └── groq.ts               # Shared Groq client instance
+│   ├── globals.css               # Modern glassmorphism theme & styles
+│   ├── layout.tsx                # App root layout with toast providers
+│   └── page.tsx                  # Clean view router
 ```
-
-### Folder Structure Diagram
-
-```mermaid
-flowchart TB
-    Root["📂 ProductivityOS-AI"] --> App["📂 app/"]
-    Root --> Public["📂 public/"]
-    Root --> Config["⚙️ Config Files"]
-
-    App --> API["📂 api/gemini/"]
-    App --> Components["📂 components/"]
-    App --> Context["📂 context/"]
-    App --> Styles["🎨 globals.css"]
-    App --> Layout["📄 layout.tsx"]
-    App --> Page["📄 page.tsx"]
-
-    API --> Route["route.ts — Unified AI endpoint"]
-
-    Components --> C1["DashboardView"]
-    Components --> C2["AssistantView"]
-    Components --> C3["TaskBoard"]
-    Components --> C4["PlannerView"]
-    Components --> C5["SummarizersView"]
-    Components --> C6["EmailView"]
-    Components --> C7["AutomationsView"]
-    Components --> C8["TeamView"]
-    Components --> C9["Sidebar + Header"]
-
-    Context --> AppCtx["AppContext.tsx — State Provider"]
-
-    style Root fill:#0c0a09,stroke:#8b5cf6,color:#fff
-    style App fill:#0c0a09,stroke:#a78bfa,color:#fff
-    style Components fill:#0c0a09,stroke:#10b981,color:#fff
-    style Context fill:#0c0a09,stroke:#f59e0b,color:#fff
-    style API fill:#0c0a09,stroke:#4285f4,color:#fff
-```
-
-<br />
 
 ---
 
-## 🚀 Quick Start
+## ⚡ Quick Start
 
 ### Prerequisites
+- **Node.js** 18.17+ or higher
+- **npm**, **yarn**, or **pnpm**
+- A **Groq API Key** (from [console.groq.com](https://console.groq.com)) or **Gemini API Key** (from [Google AI Studio](https://aistudio.google.com/))
 
-- **Node.js** 18.18+ (recommended: 20+)
-- **npm** 9+ or **pnpm**
-- **Google Gemini API Key** — [Get one here](https://aistudio.google.com/app/apikey)
-
-### Installation
-
+### 1. Clone the Repository
 ```bash
-# Clone the repository
 git clone https://github.com/tanush326k/ProductivityOS-AI.git
 cd ProductivityOS-AI
-
-# Install dependencies
-npm install
-
-# Configure environment
-cp .env.example .env.local
-# Add your Gemini API key to .env.local
-
-# Start development server
-npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-<br />
-
----
-
-## 🔐 Environment Variables
-
-Create a `.env.local` file in the project root:
-
-```env
-GEMINI_API_KEY=your_google_gemini_api_key_here
-```
-
-| Variable | Required | Description |
-|:---------|:---------|:------------|
-| `GEMINI_API_KEY` | ✅ Yes | Google Gemini API key for all AI features |
-
-> **Note:** The `.env.local` file is gitignored by default. Never commit API keys to version control.
-
-<br />
-
----
-
-## 💻 Development
-
-| Command | Description |
-|:--------|:------------|
-| `npm install` | Install all dependencies |
-| `npm run dev` | Start development server with hot reload |
-| `npm run build` | Create optimized production build |
-| `npm run start` | Start production server |
-| `npm run lint` | Run ESLint for code quality checks |
-
-### Development Workflow
-
+### 2. Install Dependencies
 ```bash
-# Start dev server
+npm install
+```
+
+### 3. Configure Environment Variables
+Create a `.env.local` file in the project root:
+```env
+# Groq API Key (Recommended for ultra-fast inference)
+GROQ_API_KEY=your_groq_api_key_here
+
+# Optional: Gemini API Key (Used as automated fallback)
+GEMINI_API_KEY=your_gemini_api_key_here
+```
+
+### 4. Run Development Server
+```bash
 npm run dev
-
-# In another terminal, run linting
-npm run lint
-
-# Build for production
-npm run build
 ```
 
-<br />
+Open [http://localhost:3000](http://localhost:3000) in your browser to experience ProductivityOS AI.
 
 ---
 
-## 🔒 Security
+## 🔒 Security & Best Practices
 
-| Feature | Implementation |
-|:--------|:---------------|
-| **API Key Protection** | Gemini API key stored in `.env.local`, validated server-side before every request |
-| **Server-Side AI Calls** | All Gemini API calls routed through `/api/gemini` — keys never exposed to the client |
-| **Input Validation** | Request body validated for required `action` and `payload` fields before processing |
-| **Error Boundaries** | Comprehensive try/catch error handling in all API routes with sanitized error messages |
-| **Gitignored Secrets** | `.env*` files excluded from version control via `.gitignore` |
-| **No Client Secrets** | Zero API keys, tokens, or secrets in client-side JavaScript bundles |
-
-<br />
+- **Zero Client Key Exposure**: All AI completions execute strictly on the server-side Next.js route handlers. No API keys are leaked to the client bundle.
+- **Ignored Sensitive Files**: `.env*` files are strictly excluded from version control in `.gitignore`.
+- **Typed Error Handling**: Protected against HTML/server errors with typed JSON validation and interactive toast notifications (`react-hot-toast`).
 
 ---
 
-## ♿ Accessibility
+## 🛠️ Tech Stack
 
-| Feature | Implementation |
-|:--------|:---------------|
-| **ARIA Labels** | All interactive elements include descriptive `aria-label` attributes |
-| **Semantic HTML** | `<header>`, `<nav>`, `<main>`, `<aside>`, `<button>`, `<form>` used throughout |
-| **Keyboard Navigation** | `tabIndex`, `role="button"`, `aria-current="page"` for full keyboard operability |
-| **Focus States** | Visible `focus:outline`, `focus:border`, `focus:ring` on all inputs and buttons |
-| **Live Regions** | `aria-live="polite"` and `aria-live="assertive"` for dynamic content updates |
-| **Color Contrast** | High-contrast text on dark backgrounds (WCAG AA compliant palette) |
-| **Screen Reader Support** | Descriptive labels for icons, modals include close button labels |
-
-<br />
-
----
-
-## ⚡ Performance
-
-| Feature | Implementation |
-|:--------|:---------------|
-| **Client Components** | `"use client"` directive only where interactivity is required |
-| **Font Optimization** | `next/font/google` with Geist Sans + Geist Mono — zero layout shift |
-| **CSS Performance** | Tailwind CSS 4 with PostCSS — tree-shaken, minimal output |
-| **Lazy Loading** | View-based routing renders only the active module component |
-| **Custom Animations** | CSS keyframes with `cubic-bezier` easing — no JavaScript animation overhead |
-| **Lightweight Charts** | Hand-crafted SVG chart in Dashboard — no heavy charting library dependency |
-| **Efficient Re-renders** | React Context with targeted state updates to minimize component re-renders |
-| **Shimmer Loaders** | CSS-only shimmer animation for loading states — zero JavaScript cost |
-
-<br />
-
-
----
-
-## 🗺 Roadmap
-
-| Phase | Feature | Status |
-|:------|:--------|:-------|
-| **v1.0** | AI Task Manager with Kanban Board | ✅ Shipped |
-| **v1.0** | AI Personal Assistant with context awareness | ✅ Shipped |
-| **v1.0** | Smart Daily Planner with AI optimizer | ✅ Shipped |
-| **v1.0** | Meeting Notes Summarizer with task sync | ✅ Shipped |
-| **v1.0** | Document Summarizer (3 formats) | ✅ Shipped |
-| **v1.0** | Email Generator with tone/length control | ✅ Shipped |
-| **v1.0** | Workflow Automation engine | ✅ Shipped |
-| **v1.0** | Team Workspace | ✅ Shipped |
-| **v1.0** | AI Insights Dashboard with Coach | ✅ Shipped |
-| **v2.0** | Database persistence (PostgreSQL/Supabase) | 🔮 Planned |
-| **v2.0** | Authentication & multi-user support | 🔮 Planned |
-| **v2.0** | Drag-and-drop Kanban reordering | 🔮 Planned |
-| **v2.0** | Real-time collaboration via WebSockets | 🔮 Planned |
-| **v2.0** | Calendar integration (Google Calendar API) | 🔮 Planned |
-| **v2.0** | Email sending via SMTP/SendGrid | 🔮 Planned |
-| **v2.0** | File upload document parsing (PDF, DOCX) | 🔮 Planned |
-| **v2.0** | AI streaming responses | 🔮 Planned |
-
-<br />
-
----
-
-### User Workflow
-
-```mermaid
-journey
-    title A Day with ProductivityOS AI
-    section Morning
-      Open Dashboard: 5: User
-      Review Focus Score: 4: User
-      Run AI Autopilot: 5: AI
-      Check prioritized tasks: 5: User
-    section Midday
-      AI optimize daily schedule: 5: AI
-      Join meeting and take notes: 3: User
-      Summarize meeting notes: 5: AI
-      Sync action items to tasks: 5: AI
-    section Afternoon
-      Generate client follow-up email: 5: AI
-      Complete tasks and trigger automation: 4: User
-      Auto-draft completion notification: 5: AI
-    section Evening
-      Request AI Coach assessment: 5: AI
-      Review productivity insights: 4: User
-```
-
-### Feature Relationships
-
-```mermaid
-mindmap
-  root(("ProductivityOS AI"))
-    AI Engine
-      Gemini 2.5 Flash
-      Structured Prompts
-      JSON + Markdown Output
-    Task Management
-      Kanban Board
-      AI Autopilot
-      Subtask Generation
-      Priority Prediction
-    Planning
-      Timeline Scheduler
-      AI Optimizer
-      Task Linking
-    Summarization
-      Meeting Notes
-      Document AI
-      Action Item Extraction
-    Communication
-      Email Generator
-      Tone Control
-      Quick Presets
-    Automation
-      Trigger-Action Rules
-      Developer Sandbox
-      Cross-module Workflows
-    Collaboration
-      Team Dashboard
-      Workload Monitoring
-      Activity Stream
-    Analytics
-      Focus Score
-      Velocity Chart
-      AI Coach
-```
-
-<br />
+| Technology | Purpose |
+|:---|:---|
+| **Next.js 16 (Turbopack)** | Fullstack React framework with App Router |
+| **TypeScript** | Strict compile-time type safety |
+| **Groq SDK** | Ultra-low latency LLM inference (`openai/gpt-oss-120b`) |
+| **Google GenAI** | Automated secondary fallback (`gemini-2.5-flash`) |
+| **Tailwind CSS v4** | Dark-mode glassmorphic styling system |
+| **Lucide Icons** | Consistent, modern iconography |
+| **React Hot Toast** | Non-blocking user feedback notifications |
 
 ---
 
 ## 📄 License
 
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
-
-<br />
-
----
-
-## 🌟 Support
-
-If this project helped you, please consider giving it a ⭐ on [GitHub](https://github.com/tanush326k/ProductivityOS-AI)!
-
-```
-⭐ Star this repository to show your support
-🍴 Fork it to customize for your own workflows
-🐛 Open issues for bug reports and feature requests
-🤝 Pull requests are welcome
-```
-
-<br />
-
----
-
-<div align="center">
-
-**Built with ❤️ using Next.js 15, React 19, TypeScript, Tailwind CSS 4, and Google Gemini 2.5 Flash**
-
-<sub>© 2026 ProductivityOS AI. All rights reserved.</sub>
-
-</div>
+This project is open-source and licensed under the [MIT License](LICENSE).

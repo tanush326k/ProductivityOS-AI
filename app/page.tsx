@@ -9,9 +9,6 @@ import { AssistantView } from "./components/AssistantView";
 import { TaskBoard } from "./components/TaskBoard";
 import { PlannerView } from "./components/PlannerView";
 import { SummarizersView } from "./components/SummarizersView";
-import { EmailView } from "./components/EmailView";
-import { AutomationsView } from "./components/AutomationsView";
-import { TeamView } from "./components/TeamView";
 
 function MainContent() {
   const { activeView } = useApp();
@@ -28,13 +25,9 @@ function MainContent() {
         return <PlannerView />;
       case "notes":
       case "docs":
-        return <SummarizersView />;
       case "email":
-        return <EmailView />;
-      case "automations":
-        return <AutomationsView />;
-      case "team":
-        return <TeamView />;
+      case "studio":
+        return <SummarizersView />;
       default:
         return <DashboardView />;
     }

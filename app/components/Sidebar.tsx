@@ -7,10 +7,6 @@ import {
   CheckSquare,
   Calendar,
   Bot,
-  Mail,
-  FileText,
-  Settings,
-  Users,
   Sparkles,
   Layers
 } from "lucide-react";
@@ -19,15 +15,11 @@ export const Sidebar: React.FC = () => {
   const { activeView, setActiveView } = useApp();
 
   const menuItems = [
-    { id: "dashboard", label: "Insights Dashboard", icon: LayoutDashboard },
-    { id: "assistant", label: "AI Personal Assistant", icon: Bot },
-    { id: "tasks", label: "AI Task Manager", icon: CheckSquare },
-    { id: "planner", label: "Smart Daily Planner", icon: Calendar },
-    { id: "notes", label: "Meeting Notes Sync", icon: Layers },
-    { id: "email", label: "Email Generator", icon: Mail },
-    { id: "docs", label: "Document Summary", icon: FileText },
-    { id: "automations", label: "Workflow Automation", icon: Settings },
-    { id: "team", label: "Team Workspace", icon: Users },
+    { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+    { id: "tasks", label: "Tasks & Kanban", icon: CheckSquare },
+    { id: "assistant", label: "AI Assistant", icon: Bot },
+    { id: "planner", label: "Daily Planner", icon: Calendar },
+    { id: "notes", label: "AI Studio", icon: Sparkles },
   ];
 
   return (
@@ -44,25 +36,27 @@ export const Sidebar: React.FC = () => {
           <h1 className="font-bold text-lg bg-gradient-to-r from-white via-neutral-100 to-neutral-400 bg-clip-text text-transparent">
             ProductivityOS
           </h1>
-          <span className="text-[10px] text-violet-400 font-semibold uppercase tracking-wider">
-            Enterprise AI
+          <span className="text-[10px] text-emerald-400 font-semibold uppercase tracking-wider">
+            Groq Acceleration
           </span>
         </div>
       </div>
 
       {/* Nav List */}
-      <nav className="flex-1 px-4 py-6 overflow-y-auto space-y-1">
+      <nav className="flex-1 px-4 py-6 overflow-y-auto space-y-1.5">
         {menuItems.map((item) => {
           const Icon = item.icon;
-          const isActive = activeView === item.id;
+          const isActive =
+            activeView === item.id ||
+            (item.id === "notes" && (activeView === "docs" || activeView === "email" || activeView === "studio"));
 
           return (
             <button
               key={item.id}
               onClick={() => setActiveView(item.id)}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 group text-left ${
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 group text-left cursor-pointer ${
                 isActive
-                  ? "bg-violet-600 text-white shadow-md shadow-violet-500/10 scale-[1.02] border border-violet-500/30"
+                  ? "bg-violet-600 text-white shadow-md shadow-violet-500/20 border border-violet-500/30"
                   : "hover:bg-neutral-800/60 hover:text-white border border-transparent"
               }`}
               aria-current={isActive ? "page" : undefined}
@@ -81,15 +75,15 @@ export const Sidebar: React.FC = () => {
         })}
       </nav>
 
-      {/* Profile / Hackathon Footer */}
+      {/* User / Workspace Footer */}
       <div className="p-4 border-t border-neutral-800/80 bg-neutral-900/30">
         <div className="flex items-center gap-3 p-2 rounded-xl">
-          <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-violet-500 to-emerald-500 flex items-center justify-center font-bold text-white text-sm shadow-md">
-            HE
+          <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-violet-500 to-emerald-500 flex items-center justify-center font-bold text-white text-xs shadow-md">
+            AI
           </div>
           <div>
-            <h4 className="text-xs font-semibold text-white">Hackathon Admin</h4>
-            <p className="text-[10px] text-emerald-400 font-medium">Demo Sandbox Active</p>
+            <h4 className="text-xs font-semibold text-white">Groq Workspace</h4>
+            <p className="text-[10px] text-emerald-400 font-medium">gpt-oss-120b Active</p>
           </div>
         </div>
       </div>
