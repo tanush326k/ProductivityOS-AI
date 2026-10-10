@@ -41,7 +41,6 @@ You can test the fully functional app directly in your browser without local set
 
 * **Production URL:** [https://main.d1fa52fy3h96m8.amplifyapp.com/](https://main.d1fa52fy3h96m8.amplifyapp.com/)
 * **Hosting:** AWS Amplify Hosting (Next.js SSR App Router)
-* **GitHub Repository:** [https://github.com/tanush326k/ProductivityOS-AI](https://github.com/tanush326k/ProductivityOS-AI)
 
 ---
 
